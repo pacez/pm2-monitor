@@ -1,0 +1,41 @@
+.header {
+    &-title {
+        float: left;
+        color: #FFF;
+    }
+
+    &-command {
+        float: right;
+        button {
+            margin-left: 10px;
+        }
+    }
+}
+
+.system-info {
+    text-align: left;
+    line-height: 32px;
+    background-color: #FFF;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    padding: 20px 0;
+    overflow: hidden;
+    span {
+        float: left;
+        min-width: 250px;
+    }
+}
+
+.action-btn {
+    margin-right: 10px;
+    color: #1890ff;
+    cursor: pointer;
+    &:last-child {
+        margin-right: 0;
+    }
+    // &::before {
+    //     content: '['
+    // }
+    // &::after {
+    //     content: ']'
+    // }
+}
