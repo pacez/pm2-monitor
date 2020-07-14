@@ -5,7 +5,7 @@ import { defaultData } from '../../util/constants';
 import Loading from '../../components/Loading';
 import Log from '../../components/Log';
 import Immutable from 'immutable';
-import { DeleteOutlined, CoffeeOutlined, ReloadOutlined, StopOutlined, PlayCircleOutlined, BranchesOutlined, LogoutOutlined, RetweetOutlined } from '@ant-design/icons';
+import { DeleteOutlined, CoffeeOutlined, ReloadOutlined, StopOutlined, PlayCircleOutlined, BranchesOutlined, LogoutOutlined, RetweetOutlined, SyncOutlined, CheckCircleTwoTone, CheckOutlined } from '@ant-design/icons';
 import './style.scss';
 const { Header, Footer, Content } = Layout;
 const defaultLog = Immutable.Map({
@@ -20,6 +20,7 @@ export default class extends PureComponent {
         log: defaultLog,
         gitlibList: defaultData,
         porcessList: defaultData,
+        buildTasks: defaultData,
         systemInfo: defaultData,
     }
 
@@ -61,6 +62,38 @@ export default class extends PureComponent {
                 </Tooltip>
             }
         },
+    ]
+
+    buildCols = [
+        {
+            width: 30,
+            title: 'Index',
+            dataIndex: 'name',
+            render: (text, record, index) => index + 1
+        },
+        {
+            title: 'PID',
+            dataIndex: 'pid',
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+        }, 
+        {
+            title: 'Branch',
+            dataIndex: 'branch'
+        },
+        {
+            width: 110,
+            title: 'status',
+            dataIndex: 'status',
+            render: (text) => {
+                if (text === 'running') {
+                    return <span style={{ color: 'green' }}> <SyncOutlined spin /> {text}</span> 
+                }
+                return <span> <CheckOutlined /> {text}</span> 
+            }
+        }
     ]
     
     processCols = [
@@ -184,6 +217,9 @@ export default class extends PureComponent {
 
     componentDidMount() {
         this.refresh();
+        window.setInterval(()=>{
+            this.buildTasks(true)
+        },6000)
     }
 
     // 刷新页面所有数据
@@ -191,6 +227,7 @@ export default class extends PureComponent {
         this.fetchSystemInfo();
         this.fetchProcess();
         this.fetchGitlib();
+        this.buildTasks();
     }
 
     // 重启服务器
@@ -283,7 +320,21 @@ export default class extends PureComponent {
         }, () => {
             Request.get('/getProccess').then(data => {
                 this.setState({
-                    porcessList: porcessList.set('data', data).set('loaded', true).set('loading', false)
+                    porcessList: porcessList.set('data', data || Immutable.List()).set('loaded', true).set('loading', false)
+                })
+            })
+        });
+    }
+
+    // 获取构建列表
+    buildTasks = (silence=false) => {
+        const { buildTasks } = this.state;
+        this.setState({
+            buildTasks: buildTasks.set('loading', !silence)
+        }, () => {
+                Request.get('/buildTasks').then(data => {
+                this.setState({
+                    buildTasks: buildTasks.set('data', data).set('loaded', true).set('loading', false)
                 })
             })
         });
@@ -313,14 +364,14 @@ export default class extends PureComponent {
     }
 
     render() {
-        const { systemInfo, porcessList, gitlibList, loading, log } = this.state;
-
+        const { systemInfo, porcessList, buildTasks, gitlibList, loading, log } = this.state;
         return (
             <>
                 {
                     (
                         loading
                         || systemInfo.get('loading')
+                        || buildTasks.get('loading')
                         || porcessList.get('loading')
                     )
                     && <Loading
@@ -368,6 +419,18 @@ export default class extends PureComponent {
                                     pagination={false}
                                     columns={this.processCols}
                                     dataSource={porcessList.get('data', Immutable.List()).toJS()}
+                                />
+                            </>
+                        }
+
+                        {
+                            buildTasks.get('loaded') && <>
+                                <h1>Build List</h1>
+                                <Table
+                                    rowKey="pid"
+                                    pagination={false}
+                                    columns={this.buildCols}
+                                    dataSource={buildTasks.get('data', Immutable.List()).toJS()}
                                 />
                             </>
                         }
