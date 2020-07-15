@@ -3,7 +3,7 @@
 该项目是自己为团队打造的CI系统监控部分，本仓库仅包含前端部分，后端暂未开源，移除业务代码后将进行开源。
 
 ### 预览图
-<img src="https://pacez.github.io/images/CI_MONITOR.png" />
+<img src="https://pacez.github.io/images/CI_MONITOR_V2.png" />
 
 ### 服务器端
 1. 基于PM2 4.X版本开发。主要使用nodejs + shell脚本。
