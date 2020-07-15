@@ -2,6 +2,8 @@
     &-title {
         float: left;
         color: #FFF;
+        margin: 0;
+        padding: 0;
     }
 
     &-command {
@@ -16,8 +18,8 @@
     text-align: left;
     line-height: 32px;
     background-color: #FFF;
-    border-bottom: 1px solid rgba(0,0,0,.1);
-    padding: 20px 0;
+    // border-bottom: 1px solid rgba(0,0,0,.1);
+    padding: 20px 30px;
     overflow: hidden;
     span {
         float: left;
@@ -38,4 +40,66 @@
     // &::after {
     //     content: ']'
     // }
+}
+
+.site-layout-background {
+    min-height: calc( 100vh - 70px - 64px);
+}
+
+.silder {
+    box-shadow:  0 0 10px 0 rgba(0,0,0,.15);
+    padding: 0 30px;
+    h1 {
+        color:rgba(255,255,255,.8)
+    }
+}
+
+.ant-layout-header {
+    padding: 0 30px!important;
+}
+
+.build-list {
+    color:rgba(255,255,255,.8);
+    text-align: left;
+    .task {
+        list-style: none;
+        border-bottom: 1px dashed rgba(255,255,255,.8);
+        padding: 5px 0;
+        .pid {
+            display: inline-block;
+            width: 33.33%;
+            overflow: hidden;
+            white-space: nowrap;
+            // text-overflow: ellipsis;
+            // flex-grow: 1;
+        }
+        .branch {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 33.33%;
+        }
+        .status {
+            display: inline-block;
+            width: 33.33%;
+            text-align: right;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &.running {
+                color: rgb(64, 250, 64);
+            }
+        }
+        .name {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        &-row-1 {
+            display: flex;
+            align-items: center;
+            // padding:  5px;
+        }
+    }
 }

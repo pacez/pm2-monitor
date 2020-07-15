@@ -7,7 +7,7 @@ import Log from '../../components/Log';
 import Immutable from 'immutable';
 import { DeleteOutlined, CoffeeOutlined, ReloadOutlined, StopOutlined, PlayCircleOutlined, BranchesOutlined, LogoutOutlined, RetweetOutlined, SyncOutlined, CheckCircleTwoTone, CheckOutlined } from '@ant-design/icons';
 import './style.scss';
-const { Header, Footer, Content } = Layout;
+const { Header, Footer, Content, Sider } = Layout;
 const defaultLog = Immutable.Map({
     visible: false,
     id: null,
@@ -62,38 +62,6 @@ export default class extends PureComponent {
                 </Tooltip>
             }
         },
-    ]
-
-    buildCols = [
-        {
-            width: 30,
-            title: 'Index',
-            dataIndex: 'name',
-            render: (text, record, index) => index + 1
-        },
-        {
-            title: 'PID',
-            dataIndex: 'pid',
-        },
-        {
-            title: 'Name',
-            dataIndex: 'name',
-        }, 
-        {
-            title: 'Branch',
-            dataIndex: 'branch'
-        },
-        {
-            width: 110,
-            title: 'status',
-            dataIndex: 'status',
-            render: (text) => {
-                if (text === 'running') {
-                    return <span style={{ color: 'green' }}> <SyncOutlined spin /> {text}</span> 
-                }
-                return <span> <CheckOutlined /> {text}</span> 
-            }
-        }
     ]
     
     processCols = [
@@ -219,7 +187,7 @@ export default class extends PureComponent {
         this.refresh();
         window.setInterval(()=>{
             this.buildTasks(true)
-        },6000)
+        },10000)
     }
 
     // 刷新页面所有数据
@@ -403,49 +371,69 @@ export default class extends PureComponent {
 
                         </div>
                     </Header>
-                    <Content className={'content'}>
-                        {
-                            <div
-                                id="systemInfo"
-                                dangerouslySetInnerHTML={{ __html: systemInfo.get('data') }}
-                                className="system-info"
-                            />
-                        }
-                        {
-                            porcessList.get('loaded') && <>
-                                <h1>Process List</h1>
-                                <Table
-                                    rowKey="pid"
-                                    pagination={false}
-                                    columns={this.processCols}
-                                    dataSource={porcessList.get('data', Immutable.List()).toJS()}
-                                />
-                            </>
-                        }
+                    {
+                        <div
+                            id="systemInfo"
+                            dangerouslySetInnerHTML={{ __html: systemInfo.get('data') }}
+                            className="system-info"
+                        />
+                    }
+                    <Layout className="site-layout-background">
+                        <Sider className="silder" width={300}>
+                            {
+                                buildTasks.get('loaded') && <>
+                                    <h1>Build List</h1>
+                                    <div className="build-list">
+                                        {
+                                            buildTasks.get('data', Immutable.List()).map(task => {
+                                                const status = task.get('status');
+                                                return <div className="task">
+                                                    <div className="task-row-1">
+                                                        <span className="pid">{task.get('pid')}</span>
+                                                        <span className="branch">{task.get('branch')}</span>
+                                                        {
 
-                        {
-                            buildTasks.get('loaded') && <>
-                                <h1>Build List</h1>
-                                <Table
-                                    rowKey="pid"
-                                    pagination={false}
-                                    columns={this.buildCols}
-                                    dataSource={buildTasks.get('data', Immutable.List()).toJS()}
-                                />
-                            </>
-                        }
-                        {
-                            gitlibList.get('loaded') && <>
-                                <h1>Gitlab Repositories</h1>
-                                <Table
-                                    rowKey="name"
-                                    pagination={false}
-                                    columns={this.gitlibCols}
-                                    dataSource={gitlibList.get('data', Immutable.List()).toJS()}
-                                />
-                            </>
-                        }
-                    </Content>
+                                                            status === 'running' && <span className="status running"> <SyncOutlined spin /> {status}</span>
+                                                        }
+                                                        {
+
+                                                            status !== 'running' && <span className="status"> <CheckOutlined /> {status}</span>
+                                                        }
+                                                    </div>
+                                                    <div className="name">{task.get('name')}</div>
+                                                </div>
+                                            })
+                                        }
+                                    </div>
+                                </>
+                            }
+                        </Sider>
+                        <Content className={'content'}>
+                            {
+                                porcessList.get('loaded') && <>
+                                    <h1>Process List</h1>
+                                    <Table
+                                        rowKey="pid"
+                                        pagination={false}
+                                        columns={this.processCols}
+                                        dataSource={porcessList.get('data', Immutable.List()).toJS()}
+                                    />
+                                </>
+                            }
+
+                            {
+                                gitlibList.get('loaded') && <>
+                                    <h1>Gitlab Repositories</h1>
+                                    <Table
+                                        rowKey="name"
+                                        pagination={false}
+                                        columns={this.gitlibCols}
+                                        dataSource={gitlibList.get('data', Immutable.List()).toJS()}
+                                    />
+                                </>
+                            }
+                        </Content>
+                    </Layout>
                     <Footer>
                         E-learning FE CI Monitor copyright © 2020   |    zhongpeizhi@beisen.com
                     </Footer>
