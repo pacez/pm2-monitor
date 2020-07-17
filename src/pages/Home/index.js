@@ -189,7 +189,7 @@ export default class extends PureComponent {
         this.refresh();
         window.setInterval(()=>{
             this.buildTasks(true)
-        },10000)
+        },7000)
     }
 
     // 刷新页面所有数据
