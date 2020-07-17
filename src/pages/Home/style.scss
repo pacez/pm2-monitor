@@ -4,6 +4,8 @@
         color: #FFF;
         margin: 0;
         padding: 0;
+        font-size: 28px;
+        font-weight: bold;
     }
 
     &-command {
@@ -18,14 +20,29 @@
     text-align: left;
     line-height: 32px;
     background-color: #FFF;
-    // border-bottom: 1px solid rgba(0,0,0,.1);
-    padding: 20px 30px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    padding: 20px 0;
     overflow: hidden;
-    span {
-        float: left;
-        min-width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    .system-item {
+        // float: left;
+        min-width: 26%;
+        &-name {
+            margin-left: 8px;
+            &::after {
+                content: ':';
+                margin-right: 10px;
+            }
+        }
     }
 }
+
+// .clearfix {
+//     clear: both;
+//     overflow: hidden;
+//     width: 100%;
+// }
 
 .action-btn {
     margin-right: 10px;
@@ -50,7 +67,7 @@
     box-shadow:  0 0 10px 0 rgba(0,0,0,.15);
     padding: 0 30px;
     h1 {
-        color:rgba(255,255,255,.8)
+        color:rgba(255,255,255,.8);
     }
 }
 
@@ -63,8 +80,11 @@
     text-align: left;
     .task {
         list-style: none;
-        border-bottom: 1px dashed rgba(255,255,255,.8);
+        border-bottom: 1px solid rgba(255,255,255,.15);
         padding: 5px 0;
+        &:last-child {
+            border-bottom: none;
+        }
         .pid {
             display: inline-block;
             width: 33.33%;
@@ -90,16 +110,32 @@
             &.running {
                 color: rgb(64, 250, 64);
             }
-        }
-        .name {
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+            &.error {
+                color:#FF5500
+            }
         }
         &-row-1 {
             display: flex;
             align-items: center;
             // padding:  5px;
+        }
+        &-row-2 {
+            display: flex;
+            align-items: center;
+            // padding:  5px;
+            .name {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                flex-grow: 1;
+            }
+
+            .build-log {
+                cursor: pointer;
+                min-width: 35px;
+                text-align: right;
+                // color: rgba(166, 255, 24,.7);
+            }
         }
     }
 }

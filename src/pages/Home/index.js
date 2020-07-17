@@ -5,12 +5,13 @@ import { defaultData } from '../../util/constants';
 import Loading from '../../components/Loading';
 import Log from '../../components/Log';
 import Immutable from 'immutable';
-import { DeleteOutlined, CoffeeOutlined, ReloadOutlined, StopOutlined, PlayCircleOutlined, BranchesOutlined, LogoutOutlined, RetweetOutlined, SyncOutlined, CheckCircleTwoTone, CheckOutlined } from '@ant-design/icons';
+import { DeleteOutlined, CoffeeOutlined, ReloadOutlined, StopOutlined, PlayCircleOutlined, BranchesOutlined, LogoutOutlined, RetweetOutlined, SyncOutlined, CheckOutlined, UnorderedListOutlined, BellOutlined, CloudServerOutlined } from '@ant-design/icons';
 import './style.scss';
 const { Header, Footer, Content, Sider } = Layout;
 const defaultLog = Immutable.Map({
     visible: false,
     id: null,
+    type: 'process', // 获取日志类型，process进程  | build 构建
 });
 
 export default class extends PureComponent {
@@ -112,6 +113,7 @@ export default class extends PureComponent {
         },
         {
             title: 'Action',
+            width: 140,
             dataIndex: 'pm_id',
             render: (pm_id, record) => {
                 return <>
@@ -274,7 +276,7 @@ export default class extends PureComponent {
         }, () => {
             Request.get('/getSystemInfo').then(data => {
                 this.setState({
-                    systemInfo: systemInfo.set('data', data).set('loaded', true).set('loading', false)
+                    systemInfo: systemInfo.set('data', eval(data)).set('loaded', true).set('loading', false)
                 })
             })
         });
@@ -323,16 +325,17 @@ export default class extends PureComponent {
     }
 
     // 控制日志组件显示状态
-    onLogVisible = (visible = false, id = null) => {
+    onLogVisible = (visible = false, id = null, type ='process') => {
         console.log(visible, id)
         const { log } = this.state;
         this.setState({
-            log: log.set('visible', visible).set('id', id)
+            log: log.set('visible', visible).set('id', id).set('type', type)
         })
     }
 
     render() {
         const { systemInfo, porcessList, buildTasks, gitlibList, loading, log } = this.state;
+
         return (
             <>
                 {
@@ -349,6 +352,7 @@ export default class extends PureComponent {
                 {
                     log.get('visible') && <Log
                         id={log.get('id')}
+                        type={log.get('type')}
                         onClose={() => { this.onLogVisible(false) }}
                     />
                 }
@@ -371,36 +375,44 @@ export default class extends PureComponent {
 
                         </div>
                     </Header>
-                    {
-                        <div
-                            id="systemInfo"
-                            dangerouslySetInnerHTML={{ __html: systemInfo.get('data') }}
-                            className="system-info"
-                        />
-                    }
                     <Layout className="site-layout-background">
-                        <Sider className="silder" width={300}>
+                        <Sider className="silder" width={280}>
                             {
                                 buildTasks.get('loaded') && <>
-                                    <h1>Build List</h1>
+                                    <h1><BellOutlined style={{ marginRight: 10 }} />Build Log</h1>
                                     <div className="build-list">
                                         {
                                             buildTasks.get('data', Immutable.List()).map(task => {
                                                 const status = task.get('status');
-                                                return <div className="task">
+                                                const pid = task.get('pid');
+                                                return <div className="task" key={task.get('pid')}>
                                                     <div className="task-row-1">
-                                                        <span className="pid">{task.get('pid')}</span>
+                                                        <span className="pid">{pid}</span>
                                                         <span className="branch">{task.get('branch')}</span>
                                                         {
 
-                                                            status === 'running' && <span className="status running"> <SyncOutlined spin /> {status}</span>
+                                                            status === 'running' && <span className="status running"> <SyncOutlined spin /></span>
                                                         }
                                                         {
 
-                                                            status !== 'running' && <span className="status"> <CheckOutlined /> {status}</span>
+                                                            status === 'end' && <span className="status"> <CheckOutlined /></span>
+                                                        }
+                                                        {
+
+                                                            status === 'error' && <span className="status error"> <StopOutlined /></span>
                                                         }
                                                     </div>
-                                                    <div className="name">{task.get('name')}</div>
+                                                    <div className="task-row-2">
+                                                        <span className="name">{task.get('name')}</span>
+                                                        {
+                                                            ['end', 'error'].includes(status) && <CoffeeOutlined
+                                                                onClick={() => { 
+                                                                    this.onLogVisible(true, pid,'build') 
+                                                                }} 
+                                                                className="build-log"
+                                                            />
+                                                        }
+                                                    </div>
                                                 </div>
                                             })
                                         }
@@ -409,9 +421,26 @@ export default class extends PureComponent {
                             }
                         </Sider>
                         <Content className={'content'}>
+
+                            {
+                                systemInfo.get('loaded') && <div
+                                    id="systemInfo"
+                                    className="system-info"
+                                >
+                                    {
+                                        systemInfo.get('data', []).map((item,index) => {
+                                            return <span className="system-item" key={index}>
+                                                <CloudServerOutlined />
+                                                <span className="system-item-name">{item.name}</span>
+                                                <span>{item.value}</span>
+                                            </span>
+                                        })
+                                    }
+                                </div>
+                            }
                             {
                                 porcessList.get('loaded') && <>
-                                    <h1>Process List</h1>
+                                    <h1><UnorderedListOutlined style={{ marginRight: 10 }} /> Process List</h1>
                                     <Table
                                         rowKey="pid"
                                         pagination={false}
@@ -423,7 +452,7 @@ export default class extends PureComponent {
 
                             {
                                 gitlibList.get('loaded') && <>
-                                    <h1>Gitlab Repositories</h1>
+                                    <h1><UnorderedListOutlined style={{marginRight: 10}} />Gitlab Repositories</h1>
                                     <Table
                                         rowKey="name"
                                         pagination={false}

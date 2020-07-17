@@ -26,11 +26,11 @@ export default class extends PureComponent {
     }
 
     fetchLog = (silence = false) => {
-        const { id }=this.props;
+        const { id,type }=this.props;
         this.setState({
             loading: !silence
         }, () => {
-            Request.get(`/log2`, { params: { id } }).then(data => {
+                Request.get(`/${type}Log`, { params: { id } }).then(data => {
                 this.setState({
                     log: data
                 })
