@@ -360,6 +360,10 @@ export default class extends PureComponent {
                     <Header>
                         <h1 className="header-title">Welcome To E-learning FE CI Monitor</h1>
                         <div className="header-command">
+                            <Button type="link" href="//10.99.110.115:8080/admin.html#whistle" target="_blank">
+                                Proxy Server
+                            </Button>
+
                             <Button icon={<RetweetOutlined />} type="primary" onClick={this.refresh}>Refresh</Button>
 
                             <Popconfirm
