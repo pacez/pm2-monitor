@@ -1,11 +1,14 @@
 .header {
     &-title {
+        text-indent: 52px;
         float: left;
         color: #FFF;
         margin: 0;
         padding: 0;
         font-size: 28px;
         font-weight: bold;
+        background: url('./images/pace_re.png') no-repeat 0 center;
+        background-size: auto 45px;
     }
 
     &-command {
