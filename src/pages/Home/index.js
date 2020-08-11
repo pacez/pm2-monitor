@@ -88,7 +88,7 @@ export default class extends PureComponent {
         {
             title: 'Status',
             dataIndex: 'pm2_env',
-            render: (pm2_env) => pm2_env.status
+            render: (pm2_env) => <span className={`col-status status-${pm2_env.status}`}>{pm2_env.status}</span>
         },
         {
             title: 'Uptime',
