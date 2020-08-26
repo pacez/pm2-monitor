@@ -358,7 +358,7 @@ export default class extends PureComponent {
                 }
                 <Layout>
                     <Header>
-                        <h1 className="header-title">Welcome To E-learning FE CI Monitor</h1>
+                        <h1 className="header-title">Welcome To E-learning FE Services</h1>
                         <div className="header-command">
                             <Button type="link" href="//design.elearning.cn/" target="_blank">
                                 Design Preview
@@ -472,7 +472,7 @@ export default class extends PureComponent {
                         </Content>
                     </Layout>
                     <Footer>
-                        E-learning FE CI Monitor copyright © 2020   |    zhongpeizhi@beisen.com
+                        E-learning FE Services copyright © 2020   |    zhongpeizhi@beisen.com
                     </Footer>
                 </Layout>
             </>
