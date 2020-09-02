@@ -66,6 +66,7 @@ export default class extends PureComponent {
                             theme: 'bespin',
                             lineNumbers: true,
                             mode: 'jsx',
+                            readOnly: true,
                         }}
                     />
                 }
