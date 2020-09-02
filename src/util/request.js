@@ -5,7 +5,7 @@ import { defaultErrorMsg } from './constants';
 
 const instance = axios.create({
     // baseURL: '//10.99.110.115:9000',
-    // baseURL:'//10.99.28.24:9000',
+    // baseURL:'//monitor.elearning.com',
     timeout: 10000,
 });
 

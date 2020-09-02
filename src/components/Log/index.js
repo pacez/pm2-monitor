@@ -2,7 +2,10 @@ import React, { PureComponent } from 'react';
 import { Modal } from 'antd';
 import Loading from '../Loading';
 import Request from '../../util/request';
+import CodeMirror from '@uiw/react-codemirror'
 import './style.scss';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/bespin.css';
 
 export default class extends PureComponent {
 
@@ -54,9 +57,18 @@ export default class extends PureComponent {
                 loading && <Loading />
             }
             <div className="code">
-                <pre>
-                    {log}
-                </pre>
+                {
+                    log && <CodeMirror
+                        value={log}
+                        options={{
+                            styleActiveLine: true,
+                            matchBrackets: true,
+                            theme: 'bespin',
+                            lineNumbers: true,
+                            mode: 'jsx',
+                        }}
+                    />
+                }
             </div>
         </Modal>
     }

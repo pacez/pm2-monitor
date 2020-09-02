@@ -5,8 +5,8 @@ import { BackTop } from 'antd';
 import { BrowserRouter, Route } from "react-router-dom";
 import './App.scss';
 
-const App = () => {
-  return <div div className="App" >
+const App = () => (
+  <div className="App" >
     <BrowserRouter>
       <Route path="/" exact={true} component={Home} />
       <Route path="/login" component={LoginPage} />
@@ -15,6 +15,6 @@ const App = () => {
       visibilityHeight={50}
     />
   </div>
-}
+)
 
 export default App;
