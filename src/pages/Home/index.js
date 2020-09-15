@@ -360,12 +360,16 @@ export default class extends PureComponent {
                     <Header>
                         <h1 className="header-title">Welcome To E-learning FE Services</h1>
                         <div className="header-command">
+                            <Button type="link" href="//ice.elearning.cn/" target="_blank">
+                                Ice
+                            </Button>
+
                             <Button type="link" href="//design.elearning.cn/" target="_blank">
-                                Design Preview
+                                Design
                             </Button>
 
                             <Button type="link" href="//proxy.elearning.cn/admin.html" target="_blank">
-                                Proxy Server
+                                Proxy
                             </Button>
 
                             <Button icon={<RetweetOutlined />} type="primary" onClick={this.refresh}>Refresh</Button>
