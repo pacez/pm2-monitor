@@ -31,7 +31,7 @@ const Login = () => {
         <div className="login">
             {/* <Loading /> */}
             <Layout.Header>
-                <h1>Welcome To E-learning FE CI Monitor</h1>
+                <h1>Welcome To E-learning FE Services</h1>
             </Layout.Header>
             <div className="form">
                 <Form>
