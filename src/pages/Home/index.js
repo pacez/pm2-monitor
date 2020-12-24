@@ -4,6 +4,7 @@ import Request from '../../util/request';
 import { defaultData } from '../../util/constants';
 import Loading from '../../components/Loading';
 import Log from '../../components/Log';
+import UnusualPageInfo from '../../components/UnusualPageInfo';
 import Immutable from 'immutable';
 import { DeleteOutlined, CoffeeOutlined, ReloadOutlined, StopOutlined, PlayCircleOutlined, BranchesOutlined, LogoutOutlined, RetweetOutlined, SyncOutlined, CheckOutlined, UnorderedListOutlined, BellOutlined, CloudServerOutlined } from '@ant-design/icons';
 import './style.scss';
@@ -358,7 +359,7 @@ export default class extends PureComponent {
                 }
                 <Layout>
                     <Header>
-                        <h1 className="header-title">Welcome To E-learning FE Services</h1>
+                        <h1 className="header-title">E-learning FE Services</h1>
                         <div className="header-command">
                             <Button type="link" href="//ice.elearning.cn/" target="_blank">
                                 Ice
@@ -371,6 +372,9 @@ export default class extends PureComponent {
                             <Button type="link" href="//proxy.elearning.cn/admin.html" target="_blank">
                                 Proxy
                             </Button>
+
+
+                            <UnusualPageInfo />
 
                             <Button icon={<RetweetOutlined />} type="primary" onClick={this.refresh}>Refresh</Button>
 
@@ -435,7 +439,7 @@ export default class extends PureComponent {
                         <Content className={'content'}>
 
                             {
-                                systemInfo.get('loaded') && <div
+                                systemInfo.get('loaded') && systemInfo.get('data') && <div
                                     id="systemInfo"
                                     className="system-info"
                                 >
