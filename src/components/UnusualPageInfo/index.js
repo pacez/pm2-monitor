@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Modal, Input, Button, message } from 'antd';
 import Loading from '../Loading';
 import Request from '../../util/request';
+import { SettingOutlined } from '@ant-design/icons';
 import './style.scss';
 
 export default class extends PureComponent {
@@ -85,9 +86,9 @@ export default class extends PureComponent {
     render() {
         const { loading, data, visible } = this.state;
         return <>
-            <Button onClick={this.onOpen} type="primary" >Page Settings</Button>
+            <Button icon={<SettingOutlined />}  onClick={this.onOpen} type="primary" >Page Settings</Button>
             <Modal
-                title = 'Page settings'
+                title= 'Page Settings'
                 width="80%"
                 visible={visible}
                 onOk = {this.onOK}
